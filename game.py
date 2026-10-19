@@ -11,6 +11,9 @@ sky = pygame.image.load("graphics/sky.png")
 ground = pygame.image.load("graphics/ground.png")
 text_surface = test__font.render("gugu run", False, (64, 64, 64))
 
+snail_surface = pygame.image.load("graphics/snail1.png")
+
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -19,6 +22,7 @@ while True:
 
     Screen.blit(sky, (0, 0))
     Screen.blit(ground, (0, 300))
-    Screen.blit(text_surface, (320, 100))
+    Screen.blit(text_surface, (320, 70))
+    Screen.blit(snail_surface, (600, 250))
     pygame.display.update()
     clock.tick(60)
