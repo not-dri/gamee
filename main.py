@@ -1,6 +1,7 @@
 import pygame
 from sys import exit
 from random import randint, choice
+import asyncio
 
 class Player(pygame.sprite.Sprite):
 	def __init__(self):
@@ -117,6 +118,7 @@ def player_animation():
 		if player_index >= len(player_walk):player_index = 0
 		player_surf = player_walk[int(player_index)]
 
+
 pygame.init()
 screen = pygame.display.set_mode((800,400))
 pygame.display.set_caption('Runner')
@@ -182,6 +184,7 @@ pygame.time.set_timer(snail_animation_timer,500)
 
 fly_animation_timer = pygame.USEREVENT + 3
 pygame.time.set_timer(fly_animation_timer,200)
+
 
 while True:
 
