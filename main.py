@@ -122,7 +122,7 @@ def player_animation():
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((800,400))
-pygame.display.set_caption('Runner')
+pygame.display.set_caption('walkey')
 clock = pygame.time.Clock()
 test_font = pygame.font.Font(None, 50)
 game_active = False
@@ -130,7 +130,7 @@ start_time = 0
 score = 0
 
 pygame.mixer.music.load("adio.mp3")
-pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.set_volume(0.4)
 pygame.mixer.music.play(-1)
 
 
