@@ -129,7 +129,7 @@ game_active = False
 start_time = 0
 score = 0
 
-pygame.mixer.music.load("adio.mp3")
+pygame.mixer.music.load("adio.ogg")
 pygame.mixer.music.set_volume(0.4)
 pygame.mixer.music.play(-1)
 
@@ -185,18 +185,24 @@ game_message = test_font.render('RUUUNNN!!!',False,(111,196,169))
 game_message_rect = game_message.get_rect(center = (400,300))
 
 
-obstacle_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(obstacle_timer,1500)
+#obstacle_timer = pygame.USEREVENT + 1
+#pygame.time.set_timer(obstacle_timer,1500)
 
-snail_animation_timer = pygame.USEREVENT + 2
-pygame.time.set_timer(snail_animation_timer,500)
+obstacle_delay = 1500
+last_obstacle_time = pygame.time.get_ticks()
+
+#snail_animation_timer = pygame.USEREVENT + 2
+#pygame.time.set_timer(snail_animation_timer,500)
+
+snail_delay = 1500
+last_snail_time = pygame.time.get_ticks()
+
 
 fly_animation_timer = pygame.USEREVENT + 3
 pygame.time.set_timer(fly_animation_timer,200)
 
-
 async def main():
-	global player_gravity, game_active, start_time, snail_surf, fly_surf, score, fly_frame_index, snail_frame_index
+	global player_gravity, game_active, start_time, snail_surf, fly_surf, score, fly_frame_index, snail_frame_index, obstacle_delay, now, last_obstacle_time, snail_delay, last_snail_time
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -216,23 +222,25 @@ async def main():
 					game_active = True
 					
 					start_time = int(pygame.time.get_ticks() / 1000)
-
+			now = pygame.time.get_ticks()
 			if game_active:
-				if event.type == obstacle_timer:
+				#if event.type == obstacle_timer:
+				if (now - last_obstacle_time>= obstacle_delay):
 					obstacle_group.add(Obstacle(choice(['fly','snail','snail','snail'])))
-					
+					last_obstacle_time = now
 
-				if event.type == snail_animation_timer:
+				#if event.type == snail_animation_timer:
+				if (now - last_snail_time>= snail_delay):
 					if snail_frame_index == 0: snail_frame_index = 1
 					else: snail_frame_index = 0
 					snail_surf = snail_frames[snail_frame_index] 
+					last_snail_time = now
 
 				if event.type == fly_animation_timer:
+				
 					if fly_frame_index == 0: fly_frame_index = 1
 					else: fly_frame_index = 0
 					fly_surf = fly_frames[fly_frame_index] 
-
-
 		if game_active:
 			screen.blit(sky_surface,(0,0))
 			screen.blit(ground_surface,(0,300))
