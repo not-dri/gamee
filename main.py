@@ -194,15 +194,18 @@ last_obstacle_time = pygame.time.get_ticks()
 #snail_animation_timer = pygame.USEREVENT + 2
 #pygame.time.set_timer(snail_animation_timer,500)
 
-snail_delay = 1500
+snail_delay = 500
 last_snail_time = pygame.time.get_ticks()
 
 
-fly_animation_timer = pygame.USEREVENT + 3
-pygame.time.set_timer(fly_animation_timer,200)
+#fly_animation_timer = pygame.USEREVENT + 3
+#pygame.time.set_timer(fly_animation_timer,200)
+
+fly_delay = 500
+last_fly_time = pygame.time.get_ticks()
 
 async def main():
-	global player_gravity, game_active, start_time, snail_surf, fly_surf, score, fly_frame_index, snail_frame_index, obstacle_delay, now, last_obstacle_time, snail_delay, last_snail_time
+	global player_gravity, game_active, start_time, snail_surf, fly_surf, score, fly_frame_index, snail_frame_index, obstacle_delay, now, last_obstacle_time, snail_delay, last_snail_time, last_fly_time, fly_delay
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -236,8 +239,8 @@ async def main():
 					snail_surf = snail_frames[snail_frame_index] 
 					last_snail_time = now
 
-				if event.type == fly_animation_timer:
-				
+				#if event.type == fly_animation_timer:
+				if (now - last_snail_time>= snail_delay):
 					if fly_frame_index == 0: fly_frame_index = 1
 					else: fly_frame_index = 0
 					fly_surf = fly_frames[fly_frame_index] 
