@@ -202,7 +202,6 @@ async def main():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				exit() 
-
 		
 			if game_active:
 				if event.type == pygame.MOUSEBUTTONDOWN:
