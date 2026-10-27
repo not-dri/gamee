@@ -195,74 +195,78 @@ fly_animation_timer = pygame.USEREVENT + 3
 pygame.time.set_timer(fly_animation_timer,200)
 
 
-while True:
+async def main():
+	global player_gravity, game_active, start_time, snail_surf, fly_surf, score, fly_frame_index, snail_frame_index
+	while True:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				exit() 
 
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			pygame.quit()
-			exit() 
+		
+			if game_active:
+				if event.type == pygame.MOUSEBUTTONDOWN:
+					if player_rect.collidepoint(event.pos) and player_rect.bottom >= 300: 
+						player_gravity = -20
+				
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_SPACE and player_rect.bottom >= 300:
+						player_gravity = -20
+			else:
+				if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+					game_active = True
+					
+					start_time = int(pygame.time.get_ticks() / 1000)
 
-    
+			if game_active:
+				if event.type == obstacle_timer:
+					obstacle_group.add(Obstacle(choice(['fly','snail','snail','snail'])))
+					
+
+				if event.type == snail_animation_timer:
+					if snail_frame_index == 0: snail_frame_index = 1
+					else: snail_frame_index = 0
+					snail_surf = snail_frames[snail_frame_index] 
+
+				if event.type == fly_animation_timer:
+					if fly_frame_index == 0: fly_frame_index = 1
+					else: fly_frame_index = 0
+					fly_surf = fly_frames[fly_frame_index] 
+
+
 		if game_active:
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				if player_rect.collidepoint(event.pos) and player_rect.bottom >= 300: 
-					player_gravity = -20
+			screen.blit(sky_surface,(0,0))
+			screen.blit(ground_surface,(0,300))
 			
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_SPACE and player_rect.bottom >= 300:
-					player_gravity = -20
+			
+			score = display_score()
+			
+			player.draw(screen)
+			player.update()
+
+			obstacle_group.draw(screen)
+			obstacle_group.update()
+
+			
+			game_active = collision_sprite()
+			
 		else:
-			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-				game_active = True
-				
-				start_time = int(pygame.time.get_ticks() / 1000)
+			screen.fill((94,120,162))
+			screen.blit(play_small,play_rect)
+			obstacle_rect_list.clear()
+			player_rect.midbottom = (80,300)
+			player_gravity = 0
 
-		if game_active:
-			if event.type == obstacle_timer:
-				obstacle_group.add(Obstacle(choice(['fly','snail','snail','snail'])))
-				
+			score_message = test_font.render(f'Your score: {score}',False,(111,196,169))
+			score_message_rect = score_message.get_rect(center = (400,300))
+			screen.blit(game_name,game_name_rect)
 
-			if event.type == snail_animation_timer:
-				if snail_frame_index == 0: snail_frame_index = 1
-				else: snail_frame_index = 0
-				snail_surf = snail_frames[snail_frame_index] 
-
-			if event.type == fly_animation_timer:
-				if fly_frame_index == 0: fly_frame_index = 1
-				else: fly_frame_index = 0
-				fly_surf = fly_frames[fly_frame_index] 
-
-
-	if game_active:
-		screen.blit(sky_surface,(0,0))
-		screen.blit(ground_surface,(0,300))
-		
-		
-		score = display_score()
-		
-		player.draw(screen)
-		player.update()
-
-		obstacle_group.draw(screen)
-		obstacle_group.update()
-
-		
-		game_active = collision_sprite()
-		
-	else:
-		screen.fill((94,120,162))
-		screen.blit(play_small,play_rect)
-		obstacle_rect_list.clear()
-		player_rect.midbottom = (80,300)
-		player_gravity = 0
-
-		score_message = test_font.render(f'Your score: {score}',False,(111,196,169))
-		score_message_rect = score_message.get_rect(center = (400,300))
-		screen.blit(game_name,game_name_rect)
-
-		if score == 0: screen.blit(game_message,game_message_rect)
-		else: screen.blit(score_message,score_message_rect)
- 
+			if score == 0: screen.blit(game_message,game_message_rect)
+			else: screen.blit(score_message,score_message_rect)
 	
-	pygame.display.update()
-	clock.tick(80)
+		
+		pygame.display.update()
+		clock.tick(80)
+
+		await asyncio.sleep(0)
+asyncio.run(main())
