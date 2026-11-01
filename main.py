@@ -188,20 +188,20 @@ game_message_rect = game_message.get_rect(center = (400,300))
 #obstacle_timer = pygame.USEREVENT + 1
 #pygame.time.set_timer(obstacle_timer,1500)
 
-obstacle_delay = 500
+obstacle_delay = 200
 last_obstacle_time = pygame.time.get_ticks()
 
 #snail_animation_timer = pygame.USEREVENT + 2
 #pygame.time.set_timer(snail_animation_timer,500)
 
-snail_delay = 500
+snail_delay = 300
 last_snail_time = pygame.time.get_ticks()
 
 
 #fly_animation_timer = pygame.USEREVENT + 3
 #pygame.time.set_timer(fly_animation_timer,200)
 
-fly_delay = 500
+fly_delay = 100
 last_fly_time = pygame.time.get_ticks()
 
 async def main():
@@ -276,7 +276,7 @@ async def main():
 	
 		
 		pygame.display.update()
-		clock.tick(80)
+		clock.tick(100)
 
 		await asyncio.sleep(0)
 asyncio.run(main())
