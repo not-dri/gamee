@@ -188,7 +188,7 @@ game_message_rect = game_message.get_rect(center = (400,300))
 #obstacle_timer = pygame.USEREVENT + 1
 #pygame.time.set_timer(obstacle_timer,1500)
 
-obstacle_delay = 1500
+obstacle_delay = 500
 last_obstacle_time = pygame.time.get_ticks()
 
 #snail_animation_timer = pygame.USEREVENT + 2
@@ -240,7 +240,7 @@ async def main():
 					last_snail_time = now
 
 				#if event.type == fly_animation_timer:
-				if (now - last_snail_time>= snail_delay):
+				if (now - last_fly_time>= fly_delay):
 					if fly_frame_index == 0: fly_frame_index = 1
 					else: fly_frame_index = 0
 					fly_surf = fly_frames[fly_frame_index] 
